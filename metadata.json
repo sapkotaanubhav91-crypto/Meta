@@ -1,0 +1,7 @@
+{
+  "name": "Gemini AI Search",
+  "description": "An AI-powered search engine and travel planner using Google Gemini 2.5 Flash and Pro to provide accurate, up-to-date answers and directions.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
