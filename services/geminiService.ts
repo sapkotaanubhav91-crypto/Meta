@@ -1,11 +1,18 @@
+
 import { GoogleGenAI } from "@google/genai";
 import type { GroundingChunk } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
+let ai: GoogleGenAI | undefined;
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAiInstance = () => {
+    if (!ai) {
+        if (!process.env.API_KEY) {
+            throw new Error("API_KEY environment variable not set");
+        }
+        ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    }
+    return ai;
+};
 
 const systemInstruction = `You are Gemini, a large language model trained by Google.
 Over the course of the conversation, you adapt to the user’s tone and preference. Try to match the user’s vibe, tone, and generally how they are speaking. Your goal is to have a natural conversation and provide helpful, accurate answers.
@@ -25,6 +32,7 @@ export const getAiSearchResult = async (query: string) => {
     };
 
     try {
+        const ai = getAiInstance();
         const response = await ai.models.generateContent({
             model: modelName,
             contents: query,
